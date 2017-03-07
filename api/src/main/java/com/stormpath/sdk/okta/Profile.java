@@ -1,5 +1,8 @@
 package com.stormpath.sdk.okta;
 
+import com.stormpath.sdk.resource.Deletable;
+import com.stormpath.sdk.resource.Saveable;
+
 import java.util.Map;
 
 /**

@@ -2,8 +2,13 @@ package com.stormpath.sdk.impl.okta;
 
 import com.stormpath.sdk.impl.ds.InternalDataStore;
 import com.stormpath.sdk.impl.resource.AbstractInstanceResource;
+import com.stormpath.sdk.impl.resource.AbstractPropertyRetriever;
+import com.stormpath.sdk.impl.resource.DateProperty;
+import com.stormpath.sdk.impl.resource.EnumProperty;
+import com.stormpath.sdk.impl.resource.MapProperty;
+import com.stormpath.sdk.impl.resource.ParentAwareObjectProperty;
 import com.stormpath.sdk.impl.resource.Property;
-import com.stormpath.sdk.okta.Credentials;
+import com.stormpath.sdk.impl.resource.StringProperty;
 import com.stormpath.sdk.okta.Link;
 import com.stormpath.sdk.okta.Profile;
 import com.stormpath.sdk.okta.User;
@@ -16,6 +21,20 @@ import java.util.Map;
  * Default implementation of {@link com.stormpath.sdk.okta.User}.
  */
 public class DefaultUser extends AbstractInstanceResource implements User  {
+
+    // SIMPLE PROPERTIES
+    private static final StringProperty ID = new StringProperty("id");
+    private static final EnumProperty<UserStatus> STATUS = new EnumProperty<>("status", UserStatus.class);
+    private static final DateProperty STATUS_CHANGED = new DateProperty("statusChanged");
+    private static final DateProperty CREATED = new DateProperty("created");
+    private static final DateProperty LAST_LOGIN = new DateProperty("lastLogin");
+    private static final DateProperty LAST_UPDATED = new DateProperty("lastUpdated");
+    private static final DateProperty PASSWORD_CHANGED = new DateProperty("passwordChanged");
+
+    private static final ParentAwareObjectProperty<DefaultProfile, AbstractPropertyRetriever> PROFILE = new ParentAwareObjectProperty<>("profile", DefaultProfile.class, AbstractPropertyRetriever.class);
+    private static final MapProperty LINKS = new MapProperty("_links");
+    private static final MapProperty CREDENTIALS = new MapProperty("credentials");
+
 
     private static final Map<String, Property> PROPERTY_DESCRIPTORS = createPropertyDescriptorMap();
 
@@ -34,101 +53,113 @@ public class DefaultUser extends AbstractInstanceResource implements User  {
 
     @Override
     public String getId() {
-        return null;
+        return getString(ID);
     }
 
     @Override
-    public User setId(String string) {
-        return null;
+    public User setId(String id) {
+        setProperty(ID, id);
+        return this;
     }
 
     @Override
     public UserStatus getStatus() {
-        return null;
+        return getEnumProperty(STATUS);
     }
 
     @Override
     public User setStatus(UserStatus userStatus) {
-        return null;
+        setProperty(STATUS, userStatus);
+        return this;
     }
 
     @Override
     public Date getStatusChanged() {
-        return null;
+        return getDateProperty(STATUS_CHANGED);
     }
 
     @Override
     public User setStatusChanged(Date statusChangedDate) {
-        return null;
+        setProperty(STATUS_CHANGED, statusChangedDate);
+        return this;
     }
 
     @Override
     public Date getCreated() {
-        return null;
+        return getDateProperty(CREATED);
     }
 
     @Override
     public User setCreated(Date createdDate) {
-        return null;
+        setProperty(CREATED, createdDate);
+        return this;
     }
 
     @Override
     public Date getLastLogin() {
-        return null;
+        return getDateProperty(LAST_LOGIN);
     }
 
     @Override
     public User setLastLogin(Date lastLoginDate) {
-        return null;
+        setProperty(LAST_LOGIN, lastLoginDate);
+        return this;
     }
 
     @Override
     public Date getLastUpdated() {
-        return null;
+        return getDateProperty(LAST_UPDATED);
     }
 
     @Override
     public User setLastUpdated(Date lastUpdatedDate) {
-        return null;
+        setProperty(LAST_UPDATED, lastUpdatedDate);
+        return this;
     }
 
     @Override
     public Date getPasswordChanged() {
-        return null;
+        return getDateProperty(PASSWORD_CHANGED);
     }
 
     @Override
     public User setPasswordChanged(Date passwordChangedDate) {
-        return null;
+        setProperty(PASSWORD_CHANGED, passwordChangedDate);
+        return this;
     }
 
     @Override
     public Profile getProfile() {
-        return null;
+        return getParentAwareObjectProperty(PROFILE);
     }
 
     @Override
     public User setProfile(Profile profile) {
-        return null;
+        setProperty(PROFILE, profile);
+        return this;
     }
 
     @Override
     public Map<String, Link> getLinks() {
-        return null;
+        return getMap(LINKS);
     }
 
     @Override
     public User setLinks(Map<String, Link> links) {
-        return null;
+        setProperty(LINKS, links);
+        return this;
     }
 
     @Override
-    public Credentials getCredentials() {
-        return null;
+    public Map<String, Object> getCredentials() {
+        return getMap(CREDENTIALS);
     }
 
     @Override
-    public User setCredentials(Credentials credentials) {
-        return null;
+    public User setCredentials(Map<String, Object> credentials) {
+        setProperty(CREDENTIALS, credentials);
+        return this;
     }
+
+
 }

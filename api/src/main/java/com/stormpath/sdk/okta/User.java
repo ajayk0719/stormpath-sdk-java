@@ -37,6 +37,6 @@ public interface User {
     Map<String, Link> getLinks();
     User setLinks(Map<String, Link> links);
 
-    Credentials getCredentials();
-    User setCredentials(Credentials credentials);
+    Map<String, Object> getCredentials();
+    User setCredentials(Map<String, Object> credentials);
 }

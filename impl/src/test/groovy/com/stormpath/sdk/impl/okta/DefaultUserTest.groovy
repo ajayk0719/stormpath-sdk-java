@@ -5,12 +5,15 @@ import com.stormpath.sdk.client.AuthenticationScheme
 import com.stormpath.sdk.impl.api.ApiKeyResolver
 import com.stormpath.sdk.impl.authc.credentials.ApiKeyCredentials
 import com.stormpath.sdk.impl.client.DefaultClient
+import com.stormpath.sdk.impl.ds.InternalDataStore
 import com.stormpath.sdk.impl.http.authc.RequestAuthenticatorFactory
+import com.stormpath.sdk.impl.oauth.DefaultOAuthPolicy
 import com.stormpath.sdk.impl.util.BaseUrlResolver
 import com.stormpath.sdk.lang.Classes
 import com.stormpath.sdk.okta.User
 import org.testng.annotations.Test
 
+import static org.easymock.EasyMock.createStrictMock
 import static org.easymock.EasyMock.expect
 import static org.powermock.api.easymock.PowerMock.createStrictMock
 import static org.powermock.api.easymock.PowerMock.mockStatic
@@ -48,6 +51,29 @@ class DefaultUserTest {
 
         def user = client.instantiate(User)
         assertThat(user, instanceOf(DefaultUser))
+    }
+
+    @Test
+    void basicTest() {
+        def internalDataStore = createStrictMock(InternalDataStore)
+
+        def properties = [
+                href: "https://api.stormpath.com/v1/mock/35YM3OwioW9PVtfLOh6q1e/oauth/token",
+                id: "test-id",
+                profile: [
+                        firstName: "joe",
+                        customField: "foobar"
+                ]
+        ]
+
+        DefaultUser defaultUser = new DefaultUser(internalDataStore, properties)
+        assertThat defaultUser.id, is("test-id")
+        assertThat defaultUser.profile.getFirstName(), is("joe")
+        assertThat defaultUser.profile, allOf(
+                                            hasEntry("firstName", "joe"),
+                                            hasEntry("customField", "foobar")
+        )
+
 
     }
 }
